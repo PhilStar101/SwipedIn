@@ -6,6 +6,11 @@
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import {
+  DocumentBuilder,
+  SwaggerCustomOptions,
+  SwaggerModule,
+} from '@nestjs/swagger';
 import { utilities, WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';
 
@@ -30,9 +35,31 @@ async function bootstrap() {
       ],
     }),
   });
+  // Main configuration
   const configService = app.get(ConfigService);
   const globalPrefix = configService.get<string>('api.prefix');
   app.setGlobalPrefix(globalPrefix);
+
+  // OPENAPI setup
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle(configService.get('documentation.title'))
+    .setDescription(configService.get('documentation.description'))
+    .setVersion(configService.get('documentation.version'))
+    .build();
+
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  const swaggerCustomOptions: SwaggerCustomOptions = {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+    customSiteTitle: configService.get('documentation.title'),
+  };
+  SwaggerModule.setup(
+    configService.get('documentation.prefix'),
+    app,
+    document,
+    swaggerCustomOptions,
+  );
 
   const port = configService.get<number>('api.port');
   await app.listen(port);
