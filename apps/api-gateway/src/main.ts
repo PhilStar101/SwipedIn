@@ -24,7 +24,7 @@ async function bootstrap() {
             ms(),
             utilities.format.nestLike(environment().api.name, {
               prettyPrint: true,
-            })
+            }),
           ),
         }),
       ],
@@ -37,7 +37,7 @@ async function bootstrap() {
   const port = configService.get<number>('api.port');
   await app.listen(port);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
   );
 }
 

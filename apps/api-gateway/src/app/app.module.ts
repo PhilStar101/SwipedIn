@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+
 import { environment } from '../environments/environment';
 import { environmentSchema } from '../environments/environment.schema';
-
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
