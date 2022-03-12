@@ -1,3 +1,7 @@
-export const environment = {
-  production: false,
+import { environment as commonEnvironment } from './environment.common';
+
+export const environment = () => {
+  return {
+    ...commonEnvironment(),
+  };
 };
