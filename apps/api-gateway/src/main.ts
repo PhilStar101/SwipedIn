@@ -1,8 +1,3 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -15,7 +10,7 @@ import { utilities, WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';
 
 import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
+import { config } from './config';
 
 const { combine, ms } = format;
 const { Console } = transports;
@@ -27,7 +22,7 @@ async function bootstrap() {
         new Console({
           format: combine(
             ms(),
-            utilities.format.nestLike(environment().api.name, {
+            utilities.format.nestLike(config().service.name, {
               prettyPrint: true,
             }),
           ),
@@ -37,14 +32,14 @@ async function bootstrap() {
   });
   // Main configuration
   const configService = app.get(ConfigService);
-  const globalPrefix = configService.get<string>('api.prefix');
+  const globalPrefix = configService.get<string>('service.prefix');
   app.setGlobalPrefix(globalPrefix);
 
   // OPENAPI setup
   const swaggerConfig = new DocumentBuilder()
-    .setTitle(configService.get('documentation.title'))
-    .setDescription(configService.get('documentation.description'))
-    .setVersion(configService.get('documentation.version'))
+    .setTitle(configService.get('service.documentation.title'))
+    .setDescription(configService.get('service.documentation.description'))
+    .setVersion(configService.get('service.documentation.version'))
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
@@ -52,16 +47,16 @@ async function bootstrap() {
     swaggerOptions: {
       persistAuthorization: true,
     },
-    customSiteTitle: configService.get('documentation.title'),
+    customSiteTitle: configService.get('service.documentation.title'),
   };
   SwaggerModule.setup(
-    configService.get('documentation.prefix'),
+    configService.get('service.documentation.prefix'),
     app,
     document,
     swaggerCustomOptions,
   );
 
-  const port = configService.get<number>('api.port');
+  const port = configService.get<number>('service.port');
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
