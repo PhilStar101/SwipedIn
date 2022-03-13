@@ -8,8 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @MessagePattern('get-data')
-  getData(body: any) {
-    return body;
-    return this.appService.getData();
+  getData(body: { message: string }) {
+    return this.appService.getData(body.message);
   }
 }

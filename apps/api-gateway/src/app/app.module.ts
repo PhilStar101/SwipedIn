@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import { config } from '../config';
 import { environmentSchema } from '../environments/environment.schema';
@@ -19,6 +20,15 @@ import { AppService } from './app.service';
         abortEarly: false,
       },
     }),
+    ClientsModule.register([
+      {
+        name: 'AUTH_SERVICE',
+        transport: Transport.REDIS,
+        options: {
+          url: 'redis://localhost:6379',
+        },
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
