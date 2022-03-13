@@ -3,5 +3,6 @@
   "projects": {
     "api-gateway": "apps/api-gateway",
     "auth": "apps/auth",
+    "types": "libs/types"
   }
 }
