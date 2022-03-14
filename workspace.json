@@ -3,9 +3,11 @@
   "projects": {
     "api-gateway": "apps/api-gateway",
     "auth": "apps/auth",
+    "constants": "libs/constants",
+    "logger": "libs/logger",
+    "match": "apps/match",
     "profile": "apps/profile",
     "recommendation": "apps/recommendation",
-    "match": "apps/match",
     "types": "libs/types"
   }
 }

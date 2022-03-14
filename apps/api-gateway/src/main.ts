@@ -6,40 +6,25 @@ import {
   SwaggerCustomOptions,
   SwaggerModule,
 } from '@nestjs/swagger';
-import { utilities, WinstonModule } from 'nest-winston';
-import { format, transports } from 'winston';
+import { logger } from '@swiped-in/logger';
 
 import { AppModule } from './app/app.module';
 import { config } from './config';
 
-const { combine, ms } = format;
-const { Console } = transports;
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: WinstonModule.createLogger({
-      transports: [
-        new Console({
-          format: combine(
-            ms(),
-            utilities.format.nestLike(config().service.name, {
-              prettyPrint: true,
-            }),
-          ),
-        }),
-      ],
-    }),
+    logger: logger({ name: config().service.name }),
   });
   // Main configuration
   const configService = app.get(ConfigService);
-  const globalPrefix = configService.get<string>('service.prefix');
+  const globalPrefix = configService.get<string>('service.api.prefix');
   app.setGlobalPrefix(globalPrefix);
 
   // OPENAPI setup
   const swaggerConfig = new DocumentBuilder()
-    .setTitle(configService.get('service.documentation.title'))
-    .setDescription(configService.get('service.documentation.description'))
-    .setVersion(configService.get('service.documentation.version'))
+    .setTitle(configService.get('service.api.documentation.title'))
+    .setDescription(configService.get('service.api.documentation.description'))
+    .setVersion(configService.get('service.api.documentation.version'))
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
@@ -47,16 +32,16 @@ async function bootstrap() {
     swaggerOptions: {
       persistAuthorization: true,
     },
-    customSiteTitle: configService.get('service.documentation.title'),
+    customSiteTitle: configService.get('service.api.documentation.title'),
   };
   SwaggerModule.setup(
-    configService.get('service.documentation.prefix'),
+    configService.get('service.api.documentation.prefix'),
     app,
     document,
     swaggerCustomOptions,
   );
 
-  const port = configService.get<number>('service.port');
+  const port = configService.get<number>('service.api.port');
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
