@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@swiped-in/constants": ["libs/constants/src/index.ts"],
       "@swiped-in/logger": ["libs/logger/src/index.ts"],
       "@swiped-in/types": ["libs/types/src/index.ts"]
     }
