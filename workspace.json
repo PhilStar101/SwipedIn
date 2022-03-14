@@ -5,6 +5,7 @@
     "auth": "apps/auth",
     "profile": "apps/profile",
     "recommendation": "apps/recommendation",
+    "match": "apps/match",
     "types": "libs/types"
   }
 }
