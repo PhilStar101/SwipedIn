@@ -28,6 +28,27 @@ import { AppService } from './app.service';
           url: 'redis://localhost:6379',
         },
       },
+      {
+        name: 'PROFILE_SERVICE',
+        transport: Transport.REDIS,
+        options: {
+          url: 'redis://localhost:6379',
+        },
+      },
+      {
+        name: 'MATCHING_SERVICE',
+        transport: Transport.REDIS,
+        options: {
+          url: 'redis://localhost:6379',
+        },
+      },
+      {
+        name: 'RECOMENDATION_SERVICE',
+        transport: Transport.REDIS,
+        options: {
+          url: 'redis://localhost:6379',
+        },
+      },
     ]),
   ],
   controllers: [AppController],

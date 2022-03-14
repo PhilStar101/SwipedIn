@@ -4,6 +4,7 @@
     "api-gateway": "apps/api-gateway",
     "auth": "apps/auth",
     "profile": "apps/profile",
+    "recommendation": "apps/recommendation",
     "types": "libs/types"
   }
 }
