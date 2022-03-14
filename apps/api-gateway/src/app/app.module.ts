@@ -36,14 +36,14 @@ import { AppService } from './app.service';
         },
       },
       {
-        name: 'MATCHING_SERVICE',
+        name: 'MATCH_SERVICE',
         transport: Transport.REDIS,
         options: {
           url: 'redis://localhost:6379',
         },
       },
       {
-        name: 'RECOMENDATION_SERVICE',
+        name: 'RECOMMENDATION_SERVICE',
         transport: Transport.REDIS,
         options: {
           url: 'redis://localhost:6379',
