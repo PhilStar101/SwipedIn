@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { environment } from '../environments/environment';
+import { config } from '../config';
 import { environmentSchema } from '../environments/environment.schema';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,13 +13,43 @@ import { AppService } from './app.service';
       isGlobal: true,
       expandVariables: true,
       cache: true,
-      load: [environment],
+      load: [config],
       validationSchema: environmentSchema,
       validationOptions: {
         allowUnknown: true,
         abortEarly: false,
       },
     }),
+    ClientsModule.register([
+      {
+        name: 'AUTH_SERVICE',
+        transport: Transport.REDIS,
+        options: {
+          url: 'redis://localhost:6379',
+        },
+      },
+      {
+        name: 'PROFILE_SERVICE',
+        transport: Transport.REDIS,
+        options: {
+          url: 'redis://localhost:6379',
+        },
+      },
+      {
+        name: 'MATCH_SERVICE',
+        transport: Transport.REDIS,
+        options: {
+          url: 'redis://localhost:6379',
+        },
+      },
+      {
+        name: 'RECOMMENDATION_SERVICE',
+        transport: Transport.REDIS,
+        options: {
+          url: 'redis://localhost:6379',
+        },
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],

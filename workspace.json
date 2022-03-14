@@ -1,6 +1,11 @@
 {
   "version": 2,
   "projects": {
-    "api-gateway": "apps/api-gateway"
+    "api-gateway": "apps/api-gateway",
+    "auth": "apps/auth",
+    "profile": "apps/profile",
+    "recommendation": "apps/recommendation",
+    "match": "apps/match",
+    "types": "libs/types"
   }
 }
