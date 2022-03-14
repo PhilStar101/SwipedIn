@@ -17,14 +17,14 @@ async function bootstrap() {
   });
   // Main configuration
   const configService = app.get(ConfigService);
-  const globalPrefix = configService.get<string>('service.prefix');
+  const globalPrefix = configService.get<string>('service.api.prefix');
   app.setGlobalPrefix(globalPrefix);
 
   // OPENAPI setup
   const swaggerConfig = new DocumentBuilder()
-    .setTitle(configService.get('service.documentation.title'))
-    .setDescription(configService.get('service.documentation.description'))
-    .setVersion(configService.get('service.documentation.version'))
+    .setTitle(configService.get('service.api.documentation.title'))
+    .setDescription(configService.get('service.api.documentation.description'))
+    .setVersion(configService.get('service.api.documentation.version'))
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
@@ -32,16 +32,16 @@ async function bootstrap() {
     swaggerOptions: {
       persistAuthorization: true,
     },
-    customSiteTitle: configService.get('service.documentation.title'),
+    customSiteTitle: configService.get('service.api.documentation.title'),
   };
   SwaggerModule.setup(
-    configService.get('service.documentation.prefix'),
+    configService.get('service.api.documentation.prefix'),
     app,
     document,
     swaggerCustomOptions,
   );
 
-  const port = configService.get<number>('service.port');
+  const port = configService.get<number>('service.api.port');
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,

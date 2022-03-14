@@ -1,13 +1,10 @@
-export const config = () => {
-  const name = 'SwipedIn';
-  const serviceName = 'api-gateway';
+import { constants } from '@swiped-in/constants';
 
-  return {
-    application: {
-      name,
-    },
-    service: {
-      name: `${name} ${serviceName}`,
+const name = constants.application.name;
+export const config = () => ({
+  service: {
+    name: 'API gateway',
+    api: {
       host: process.env.HOST,
       prefix: 'api',
       port: parseInt(process.env.PORT, 10) || 3000,
@@ -18,5 +15,5 @@ export const config = () => {
         version: '1.0',
       },
     },
-  };
-};
+  },
+});
