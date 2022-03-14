@@ -7,7 +7,7 @@ export const config = () => {
       name,
     },
     service: {
-      name: `${name} (${serviceName})`,
+      name: `${name} ${serviceName}`,
       host: process.env.HOST,
       prefix: 'api',
       port: parseInt(process.env.PORT, 10) || 3000,

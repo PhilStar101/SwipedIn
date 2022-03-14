@@ -6,29 +6,14 @@ import {
   SwaggerCustomOptions,
   SwaggerModule,
 } from '@nestjs/swagger';
-import { utilities, WinstonModule } from 'nest-winston';
-import { format, transports } from 'winston';
+import { logger } from '@swiped-in/logger';
 
 import { AppModule } from './app/app.module';
 import { config } from './config';
 
-const { combine, ms } = format;
-const { Console } = transports;
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: WinstonModule.createLogger({
-      transports: [
-        new Console({
-          format: combine(
-            ms(),
-            utilities.format.nestLike(config().service.name, {
-              prettyPrint: true,
-            }),
-          ),
-        }),
-      ],
-    }),
+    logger: logger({ name: config().service.name }),
   });
   // Main configuration
   const configService = app.get(ConfigService);
