@@ -8,6 +8,7 @@
     "match": "apps/match",
     "profile": "apps/profile",
     "recommendation": "apps/recommendation",
+    "shared": "libs/shared",
     "types": "libs/types"
   }
 }
