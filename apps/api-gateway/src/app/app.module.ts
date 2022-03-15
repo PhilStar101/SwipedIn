@@ -1,25 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule } from '@swiped-in/shared';
 
 import { config } from '../config';
-import { environmentSchema } from '../environments/environment.schema';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      expandVariables: true,
-      cache: true,
-      load: [config],
-      validationSchema: environmentSchema,
-      validationOptions: {
-        allowUnknown: true,
-        abortEarly: false,
-      },
-    }),
+    ConfigModule(config),
     ClientsModule.register([
       {
         name: 'AUTH_SERVICE',

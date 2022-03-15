@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@swiped-in/shared';
 
+import { config } from '../config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [],
+  imports: [ConfigModule(config)],
   controllers: [AppController],
   providers: [AppService],
 })
