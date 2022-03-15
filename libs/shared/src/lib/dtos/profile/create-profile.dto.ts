@@ -17,7 +17,7 @@ export class ProviderIds {
   google?: string;
 }
 
-export class CreateUserDto {
+export class CreateProfileDto {
   @ApiProperty()
   @ValidateNested()
   @IsDefined()
