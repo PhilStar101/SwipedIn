@@ -34,7 +34,7 @@ export class CreateUserDto {
   username: string;
 
   @ApiProperty()
-  @IsAlphanumeric()
+  @IsString()
   password?: string;
 
   @ApiProperty()
