@@ -4,7 +4,7 @@ import {
   ConfigObject,
 } from '@nestjs/config';
 
-import { environmentSchema } from './environment.schema';
+import { environmentSchema } from '../schemas/environment.schema';
 
 export const ConfigModule = (config: ConfigFactory<ConfigObject>) =>
   ConfigModuleNest.forRoot({

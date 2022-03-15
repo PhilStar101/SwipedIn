@@ -1,2 +1,2 @@
-export * from './lib/config.module';
-export * from './lib/environment.schema';
+export * from './lib/modules/config.module';
+export * from './lib/schemas/environment.schema';
