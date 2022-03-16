@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
@@ -8,7 +8,7 @@ import {
 } from '@nestjs/swagger';
 import { logger } from '@swiped-in/logger';
 
-import { AppModule } from './app/app.module';
+import { AppModule } from './app.module';
 import { config } from './config';
 
 async function bootstrap() {
@@ -19,6 +19,14 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const globalPrefix = configService.get<string>('service.api.prefix');
   app.setGlobalPrefix(globalPrefix);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      skipMissingProperties: true,
+      transform: true,
+    }),
+  );
 
   // OPENAPI setup
   const swaggerConfig = new DocumentBuilder()
