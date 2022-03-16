@@ -46,7 +46,7 @@ export class ProfilesController {
   @MessagePattern(profilesPattern('update'))
   update(
     @Payload('id') id: string,
-    @Payload() updateProfileDto: UpdateProfileDto,
+    @Payload('updateProfileDto') updateProfileDto: UpdateProfileDto,
   ) {
     return this.profilesService.update(id, updateProfileDto);
   }

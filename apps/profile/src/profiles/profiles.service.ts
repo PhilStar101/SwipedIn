@@ -1,4 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   CreateProfileDto,
@@ -33,21 +34,17 @@ export class ProfilesService {
 
   async update(id: string, updateProfileDto: UpdateProfileDto) {
     if (updateProfileDto.confirmed && !updateProfileDto.username) {
-      throw new BadRequestException([
-        'username is required when confirmed is true',
-      ]);
+      throw new RpcException(['username is required when confirmed is true']);
     }
 
     if (updateProfileDto.username) {
       const profileWithSameUsername = await this.profileModel.findOne({
-        urlPath: updateProfileDto.username,
+        username: updateProfileDto.username,
       });
       if (profileWithSameUsername) {
         if (profileWithSameUsername.id === id) return profileWithSameUsername;
 
-        throw new BadRequestException([
-          'Profile with this username already exists',
-        ]);
+        throw new RpcException(['Profile with this username already exists']);
       }
     }
     return this.profileModel.findByIdAndUpdate(id, updateProfileDto);
