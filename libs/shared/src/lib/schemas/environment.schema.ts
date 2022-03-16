@@ -8,6 +8,6 @@ export const environmentSchema = Joi.object({
   DB_PASSWORD: Joi.string().min(1).required(),
   DB_NAME: Joi.string().min(1).required(),
   DB_URI: Joi.string()
-    .regex(/mongodb\+srv:\/\/.*:.*@.*\/.*/)
+    .regex(/(mongodb\+srv:\/\/.*:.*@.*\/.*)|(mongodb:\/\/.*\/.*)/)
     .required(),
 });
