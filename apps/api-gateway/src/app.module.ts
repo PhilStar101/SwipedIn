@@ -2,9 +2,8 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@swiped-in/shared';
 
-import { config } from '../config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { config } from './config';
+import { ProfilesModule } from './profiles/profiles.module';
 
 @Module({
   imports: [
@@ -39,8 +38,7 @@ import { AppService } from './app.service';
         },
       },
     ]),
+    ProfilesModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

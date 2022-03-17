@@ -1,2 +1,4 @@
-export * from './lib/config.module';
-export * from './lib/environment.schema';
+export * from './lib/dtos';
+export * from './lib/modules';
+export * from './lib/schemas';
+export * from './lib/utils';
