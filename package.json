@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nx run-many --target=serve --all --parallel --maxParallel=10",
     "docker:up": "docker-compose up -d",
+    "lint": "nx run-many --target=lint --all",
     "build": "nx build",
     "test": "nx test"
   },
