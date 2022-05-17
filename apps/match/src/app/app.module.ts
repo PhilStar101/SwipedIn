@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@swiped-in/shared';
+import { ConfigModule } from '@swiped-in/backend/config';
 
 import { config } from '../config';
 import { AppController } from './app.controller';

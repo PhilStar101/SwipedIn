@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { ConfigModule } from '@swiped-in/shared';
+import { ConfigModule } from '@swiped-in/backend/config';
 
 import { config } from './config';
 import { ProfilesModule } from './profiles/profiles.module';
