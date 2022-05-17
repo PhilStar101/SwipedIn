@@ -29,6 +29,7 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
+        "port": 9233,
         "buildTarget": "match:build"
       }
     },

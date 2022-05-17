@@ -1,0 +1,52 @@
+{
+  "configurations": [
+    {
+      "name": "API Gateway",
+      "port": 9229,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "name": "Profiles",
+      "port": 9230,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "name": "Auth",
+      "port": 9231,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "name": "Recommendation",
+      "port": 9232,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "name": "Match",
+      "port": 9233,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "SwipedIn",
+      "configurations": [
+        "API Gateway",
+        "Profiles",
+        "Auth",
+        "Recommendation",
+        "Match"
+      ],
+      "stopAll": true
+    }
+  ]
+}
