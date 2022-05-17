@@ -6,7 +6,7 @@ import {
   SwaggerCustomOptions,
   SwaggerModule,
 } from '@nestjs/swagger';
-import { logger } from '@swiped-in/logger';
+import { logger } from '@swiped-in/backend/logger';
 
 import { AppModule } from './app.module';
 import { config } from './config';

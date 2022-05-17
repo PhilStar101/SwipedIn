@@ -1,13 +1,13 @@
 {
-  "root": "libs/logger",
-  "sourceRoot": "libs/logger/src",
+  "root": "libs/backend/logger",
+  "sourceRoot": "libs/backend/logger/src",
   "projectType": "library",
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/logger/**/*.ts"]
+        "lintFilePatterns": ["libs/backend/logger/**/*.ts"]
       }
     }
   },
