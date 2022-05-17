@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@swiped-in/backend/database": ["libs/backend/database/src/index.ts"],
       "@swiped-in/backend/config": ["libs/backend/config/src/index.ts"],
       "@swiped-in/backend/logger": ["libs/backend/logger/src/index.ts"],
       "@swiped-in/constants": ["libs/constants/src/index.ts"],
