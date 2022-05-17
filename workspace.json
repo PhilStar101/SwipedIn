@@ -3,9 +3,9 @@
   "projects": {
     "api-gateway": "apps/api-gateway",
     "auth": "apps/auth",
-    "backend-database": "libs/backend/database",
     "backend-config": "libs/backend/config",
     "backend-constants": "libs/constants",
+    "backend-database": "libs/backend/database",
     "logger": "libs/backend/logger",
     "match": "apps/match",
     "profile": "apps/profile",
