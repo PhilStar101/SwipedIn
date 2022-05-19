@@ -10,7 +10,6 @@ export const Hirer = {
     gitHub: '',
     linkedIn: '',
   },
-  matches: ['123'],
 };
 
 export const Employee = {
@@ -34,5 +33,4 @@ export const Employee = {
     gitHub: '',
     linkedIn: '',
   },
-  matches: ['123'],
 };
