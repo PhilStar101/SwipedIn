@@ -17,13 +17,6 @@ import { ProfilesModule } from './profiles/profiles.module';
         },
       },
       {
-        name: 'PROFILE_SERVICE',
-        transport: Transport.REDIS,
-        options: {
-          url: 'redis://localhost:6379',
-        },
-      },
-      {
         name: 'MATCH_SERVICE',
         transport: Transport.REDIS,
         options: {
