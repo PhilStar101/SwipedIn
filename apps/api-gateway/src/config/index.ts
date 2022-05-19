@@ -15,5 +15,10 @@ export const config = () => ({
         version: '1.0',
       },
     },
+    database: {
+      host: `${process.env.DB_URI}${
+        process.env[`NODE_ENV`] === 'test' ? '_test' : ''
+      }?retryWrites=true&w=majority`,
+    },
   },
 });

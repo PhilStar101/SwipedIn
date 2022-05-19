@@ -3,12 +3,13 @@
   "projects": {
     "api-gateway": "apps/api-gateway",
     "auth": "apps/auth",
-    "constants": "libs/constants",
-    "logger": "libs/logger",
+    "backend-config": "libs/backend/config",
+    "backend-constants": "libs/constants",
+    "backend-database": "libs/backend/database",
+    "logger": "libs/backend/logger",
     "match": "apps/match",
     "profile": "apps/profile",
     "recommendation": "apps/recommendation",
-    "shared": "libs/shared",
-    "types": "libs/types"
+    "shared": "libs/shared"
   }
 }

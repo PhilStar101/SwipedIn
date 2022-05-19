@@ -3,8 +3,7 @@ import {
   ConfigModule as ConfigModuleNest,
   ConfigObject,
 } from '@nestjs/config';
-
-import { environmentSchema } from '../schemas/environment.schema';
+import { environmentSchema } from '@swiped-in/shared';
 
 export const ConfigModule = (config: ConfigFactory<ConfigObject>) =>
   ConfigModuleNest.forRoot({

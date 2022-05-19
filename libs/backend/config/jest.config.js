@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'api-gateway',
-  preset: '../../jest.preset.js',
+  displayName: 'backend--config',
+  preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,6 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/api-gateway',
-  testMatch: ['**/__tests__/**/*spec.ts', '!**/__tests__/**/*e2e*.ts'],
+  coverageDirectory: '../../../coverage/libs/backend/config',
 };
