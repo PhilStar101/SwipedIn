@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { ProfilesController } from './profiles.controller';
-import { ProfilesService } from './profiles.service';
+import { EmployeeController } from './employee.controller';
+import { EmployeeService } from './employee.service';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { ProfilesService } from './profiles.service';
       },
     ]),
   ],
-  controllers: [ProfilesController],
-  providers: [ProfilesService],
+  controllers: [EmployeeController],
+  providers: [EmployeeService],
 })
 export class ProfilesModule {}

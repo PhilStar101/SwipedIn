@@ -1,16 +1,18 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Profile, ProfileSchema } from '@swiped-in/shared';
+import { Employee, EmployeeSchema } from '@swiped-in/shared';
 
-import { ProfilesController } from './profiles.controller';
-import { ProfilesService } from './profiles.service';
+import { EmployeesController } from './employee.controller';
+import { EmployeesService } from './employee.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Profile.name, schema: ProfileSchema }]),
+    MongooseModule.forFeature([
+      { name: Employee.name, schema: EmployeeSchema, collection: 'profiles' },
+    ]),
   ],
-  controllers: [ProfilesController],
-  providers: [ProfilesService],
-  exports: [ProfilesService],
+  controllers: [EmployeesController],
+  providers: [EmployeesService],
+  exports: [EmployeesService],
 })
 export class ProfilesModule {}

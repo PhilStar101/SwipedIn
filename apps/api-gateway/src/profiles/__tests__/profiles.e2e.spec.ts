@@ -1,11 +1,12 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { DatabaseModule, DatabaseService } from '@swiped-in/backend/database';
+import { CreateEmployeeDto, UpdateEmployeeDto } from '@swiped-in/shared';
 import { Connection } from 'mongoose';
 import * as request from 'supertest';
 
 import { AppModule } from '../../app.module';
-import { Employee, Hirer } from './__mocks__/profile.mock';
+import { Employee, Hirer } from './__mocks__/profiles.mock';
 // import { CreateUserRequest } from '../../dto/request/create-user-request.dto';
 
 describe('ProfilesController', () => {
@@ -37,33 +38,67 @@ describe('ProfilesController', () => {
   });
 
   describe('getProfiles', () => {
-    it('should return an array of profiles', async () => {
+    it('should return an array of Employee', async () => {
       await dbConnection.collection('profiles').insertMany([Employee, Hirer]);
-      const response = await request(httpServer).get('/api/profiles');
+      const response = await request(httpServer).get('/api/profiles/employee');
 
       expect(response.status).toBe(200);
-      expect(response.body).toMatchObject([Employee, Hirer]);
+      expect(response.body).toMatchObject([Employee]);
+    });
+
+    it('should return one Employee', async () => {
+      const { insertedId } = await dbConnection
+        .collection('profiles')
+        .insertOne(Employee);
+
+      const response = await request(httpServer).get(
+        `/api/profiles/employee/${insertedId}`,
+      );
+
+      expect(response.status).toBe(200);
+      expect(response.body).toMatchObject(Employee);
     });
   });
 
   describe('createProfile', () => {
-    it('should create a Profile', async () => {
-      const createEmployeeRequest = {
-        name: Employee.name,
-        email: Employee.email,
-        age: Employee.age,
+    it('should create an Employee', async () => {
+      const createEmployeeRequest: CreateEmployeeDto = {
+        ...Employee,
       };
       const response = await request(httpServer)
-        .post('api/profiles')
+        .post('/api/profiles/employee')
         .send(createEmployeeRequest);
 
       expect(response.status).toBe(201);
       expect(response.body).toMatchObject(createEmployeeRequest);
 
       const user = await dbConnection
-        .collection('users')
+        .collection('profiles')
         .findOne({ email: createEmployeeRequest.email });
       expect(user).toMatchObject(createEmployeeRequest);
+    });
+  });
+
+  describe('updateProfile', () => {
+    it('should update an Employee', async () => {
+      const { insertedId } = await dbConnection
+        .collection('profiles')
+        .insertOne(Employee);
+
+      const updateEmployeeRequest: UpdateEmployeeDto = {
+        email: 'new@email.com',
+      };
+
+      const response = await request(httpServer)
+        .patch(`/api/profiles/employee/${insertedId}`)
+        .send(updateEmployeeRequest);
+
+      expect(response.status).toBe(200);
+
+      const employee = await dbConnection
+        .collection('profiles')
+        .findOne({ email: updateEmployeeRequest.email });
+      expect(employee).toMatchObject(updateEmployeeRequest);
     });
   });
 });

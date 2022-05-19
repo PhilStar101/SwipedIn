@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { ProfilesController } from '../profiles.controller';
-import { ProfilesService } from '../profiles.service';
+import { EmployeeController } from '../employee.controller';
+import { EmployeeService } from '../employee.service';
 
 describe('ProfilesController', () => {
-  let controller: ProfilesController;
+  let controller: EmployeeController;
   const profileDto = {
     username: 'PhilStar',
     providerIds: {
@@ -51,14 +51,14 @@ describe('ProfilesController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [ProfilesController],
-      providers: [ProfilesService],
+      controllers: [EmployeeController],
+      providers: [EmployeeService],
     })
-      .overrideProvider(ProfilesService)
+      .overrideProvider(EmployeeService)
       .useValue(mockProfilesService)
       .compile();
 
-    controller = module.get<ProfilesController>(ProfilesController);
+    controller = module.get<EmployeeController>(EmployeeController);
   });
 
   it('should be defined', () => {
