@@ -12,5 +12,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/api-gateway',
-  testMatch: ['**/__tests__/**/*spec.ts', '!**/__tests__/**/*e2e*.ts'],
+  testMatch: ['**/__tests__/**/*e2e*.ts'],
 };
