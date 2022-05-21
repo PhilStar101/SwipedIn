@@ -10,21 +10,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-export class ProviderIds {
-  @ApiPropertyOptional()
-  @IsNotEmpty()
-  google?: string;
-}
-
-export class Name {
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  firstName: string;
-  @ApiPropertyOptional()
-  @IsString()
-  lastName?: string;
-}
+import { Socials } from './common';
 
 export class Experience {
   @ApiProperty()
@@ -43,24 +29,15 @@ export class Experience {
   stack: string[];
 }
 
-export class Socials {
+export class Name {
   @ApiProperty()
+  @IsNotEmpty()
   @IsString()
-  instagram: string;
-
-  @ApiProperty()
+  firstName: string;
+  @ApiPropertyOptional()
   @IsString()
-  twitter: string;
-
-  @ApiProperty()
-  @IsString()
-  gitHub: string;
-
-  @ApiProperty()
-  @IsString()
-  linkedIn: string;
+  lastName?: string;
 }
-
 export class CreateEmployeeDto {
   @ApiPropertyOptional()
   @IsNumber()
