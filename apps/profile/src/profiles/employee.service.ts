@@ -10,7 +10,7 @@ import {
 } from '@swiped-in/shared';
 
 @Injectable()
-export class EmployeesService {
+export class EmployeeService {
   constructor(
     @InjectModel(Employee.name) private employeeModel: EmployeeModel,
   ) {}

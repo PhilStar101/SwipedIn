@@ -7,7 +7,7 @@ import {
   UpdateEmployeeDto,
 } from '@swiped-in/shared';
 
-const employeesPattern = createPatternFactory('profiles/employee');
+const employeePattern = createPatternFactory('profiles/employee');
 
 @Injectable()
 export class EmployeeService {
@@ -15,38 +15,38 @@ export class EmployeeService {
 
   async create(createEmployeeDto: CreateEmployeeDto) {
     return this.employeeClient.send(
-      employeesPattern('create'),
+      employeePattern('create'),
       createEmployeeDto,
     );
   }
 
   async findAll(paginationParams: GetPaginationParamsDto) {
     return this.employeeClient.send(
-      employeesPattern('findAll'),
+      employeePattern('findAll'),
       paginationParams,
     );
   }
 
   async findOne(id: string) {
-    return this.employeeClient.send(employeesPattern('findOne'), { id });
+    return this.employeeClient.send(employeePattern('findOne'), { id });
   }
 
   async findByProvider(provider: string, id: string) {
-    return this.employeeClient.send(employeesPattern('findByProvider'), {
+    return this.employeeClient.send(employeePattern('findByProvider'), {
       provider,
       id,
     });
   }
 
   async update(id: string, updateEmployeeDto: UpdateEmployeeDto) {
-    return this.employeeClient.send(employeesPattern('update'), {
+    return this.employeeClient.send(employeePattern('update'), {
       id,
       updateEmployeeDto,
     });
   }
 
   async remove(id: string) {
-    return this.employeeClient.send(employeesPattern('remove'), {
+    return this.employeeClient.send(employeePattern('remove'), {
       id,
     });
   }

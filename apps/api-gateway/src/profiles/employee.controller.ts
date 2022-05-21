@@ -19,26 +19,26 @@ import { EmployeeService } from './employee.service';
 
 @Controller('profiles/employee')
 export class EmployeeController {
-  constructor(private readonly employeesService: EmployeeService) {}
+  constructor(private readonly employeeService: EmployeeService) {}
 
   @Post()
   create(@Body() createEmployeeDto: CreateEmployeeDto) {
-    return this.employeesService.create(createEmployeeDto);
+    return this.employeeService.create(createEmployeeDto);
   }
 
   @Get()
   findAll(@Query() paginationParams: GetPaginationParamsDto) {
-    return this.employeesService.findAll(paginationParams);
+    return this.employeeService.findAll(paginationParams);
   }
 
   @Get('/byProvider')
   findByProvider(@Query('provider') provider: string, @Query('id') id: string) {
-    return this.employeesService.findByProvider(provider, id);
+    return this.employeeService.findByProvider(provider, id);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.employeesService.findOne(id);
+    return this.employeeService.findOne(id);
   }
 
   @Patch(':id')
@@ -46,11 +46,11 @@ export class EmployeeController {
     @Param('id') id: string,
     @Body() updateEmployeeDto: UpdateEmployeeDto,
   ) {
-    return this.employeesService.update(id, updateEmployeeDto);
+    return this.employeeService.update(id, updateEmployeeDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.employeesService.remove(id);
+    return this.employeeService.remove(id);
   }
 }
