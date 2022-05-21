@@ -52,6 +52,7 @@ export class CreateEmployeeDto {
   webSite?: string;
 
   @ApiProperty()
+  @ValidateNested()
   @IsDefined()
   @Type(() => Name)
   name: Name;
