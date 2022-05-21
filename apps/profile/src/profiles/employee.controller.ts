@@ -48,8 +48,6 @@ export class EmployeeController {
     @Payload('id') id: string,
     @Payload('updateEmployeeDto') updateEmployeeDto: UpdateEmployeeDto,
   ) {
-    console.log(updateEmployeeDto);
-
     return this.employeeService.update(id, updateEmployeeDto);
   }
 

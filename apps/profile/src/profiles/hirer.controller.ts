@@ -48,8 +48,6 @@ export class HirerController {
     @Payload('id') id: string,
     @Payload('updateHirerDto') updateHirerDto: UpdateHirerDto,
   ) {
-    console.log(updateHirerDto);
-
     return this.hirerService.update(id, updateHirerDto);
   }
 
