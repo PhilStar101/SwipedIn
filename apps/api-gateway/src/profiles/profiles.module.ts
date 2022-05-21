@@ -3,6 +3,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import { EmployeeController } from './employee.controller';
 import { EmployeeService } from './employee.service';
+import { HirerController } from './hirer.controller';
+import { HirerService } from './hirer.service';
 
 @Module({
   imports: [
@@ -16,7 +18,7 @@ import { EmployeeService } from './employee.service';
       },
     ]),
   ],
-  controllers: [EmployeeController],
-  providers: [EmployeeService],
+  controllers: [EmployeeController, HirerController],
+  providers: [EmployeeService, HirerService],
 })
 export class ProfilesModule {}
