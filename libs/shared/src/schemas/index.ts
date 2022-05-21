@@ -1,2 +1,2 @@
 export * from './environment.schema';
-export * from './mongodb/profile.schema';
+export * from './mongodb/profile';

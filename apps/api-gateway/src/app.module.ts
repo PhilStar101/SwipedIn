@@ -3,7 +3,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@swiped-in/backend/config';
 
 import { config } from './config';
-import { ProfilesModule } from './profiles/profiles.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -31,7 +31,7 @@ import { ProfilesModule } from './profiles/profiles.module';
         },
       },
     ]),
-    ProfilesModule,
+    ProfileModule,
   ],
 })
 export class AppModule {}
