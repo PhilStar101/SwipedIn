@@ -21,4 +21,4 @@ import { HirerService } from './hirer.service';
   controllers: [EmployeeController, HirerController],
   providers: [EmployeeService, HirerService],
 })
-export class ProfilesModule {}
+export class ProfileModule {}
