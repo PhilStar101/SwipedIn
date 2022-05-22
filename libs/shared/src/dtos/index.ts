@@ -1,3 +1,4 @@
+export * from './match/create-match.dto';
 export * from './pagination/pagination.dto';
 export * from './profile/common';
 export * from './profile/create-employee.dto';
