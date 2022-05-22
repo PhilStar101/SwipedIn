@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nx run-many --target=serve --all --parallel --maxParallel=10",
-    "start:test-env": "export NODE_ENV=test; nx run-many --target=serve --projects=profile --parallel --maxParallel=10",
+    "start:test-env": "export NODE_ENV=test; nx run-many --target=serve --projects=profile,match --parallel --maxParallel=10",
     "docker:up": "docker-compose up -d",
     "lint": "nx run-many --target=lint --all",
     "build": "nx build",
