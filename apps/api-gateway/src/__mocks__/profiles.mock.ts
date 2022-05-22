@@ -36,3 +36,5 @@ export const Employee = {
     linkedIn: '',
   },
 };
+export const getHirer = () => ({ ...Hirer });
+export const getEmployee = () => ({ ...Employee });
