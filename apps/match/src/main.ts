@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { logger } from '@swiped-in/backend/logger';
 
-import { AppModule } from './app/app.module';
+import { AppModule } from './app.module';
 import { config } from './config';
 
 async function bootstrap() {
