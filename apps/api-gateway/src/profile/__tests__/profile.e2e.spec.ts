@@ -10,10 +10,10 @@ import {
 import { Connection } from 'mongoose';
 import * as request from 'supertest';
 
+import { Employee, Hirer } from '../../__mocks__/profiles.mock';
 import { AppModule } from '../../app.module';
-import { Employee, Hirer } from './__mocks__/profiles.mock';
 
-describe('ProfilesController', () => {
+describe('Profile', () => {
   let dbConnection: Connection;
   let httpServer: unknown;
   let app: INestApplication;
@@ -28,17 +28,16 @@ describe('ProfilesController', () => {
     await app.init();
 
     dbConnection = moduleRef.get<DatabaseService>(DatabaseService).connection;
-
     httpServer = app.getHttpServer();
   });
 
   afterAll(async () => {
-    // await dbConnection.dropDatabase();
+    await dbConnection.dropDatabase();
     await app.close();
   });
 
   beforeEach(async () => {
-    await dbConnection.collection('profiles').deleteMany({});
+    await dbConnection.dropDatabase();
   });
 
   describe('getProfiles', () => {

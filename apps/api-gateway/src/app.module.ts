@@ -3,6 +3,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@swiped-in/backend/config';
 
 import { config } from './config';
+import { MatchModule } from './match/match.module';
 import { ProfileModule } from './profile/profile.module';
 
 @Module({
@@ -17,13 +18,6 @@ import { ProfileModule } from './profile/profile.module';
         },
       },
       {
-        name: 'MATCH_SERVICE',
-        transport: Transport.REDIS,
-        options: {
-          url: 'redis://localhost:6379',
-        },
-      },
-      {
         name: 'RECOMMENDATION_SERVICE',
         transport: Transport.REDIS,
         options: {
@@ -32,6 +26,7 @@ import { ProfileModule } from './profile/profile.module';
       },
     ]),
     ProfileModule,
+    MatchModule,
   ],
 })
 export class AppModule {}
