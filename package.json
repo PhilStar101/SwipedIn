@@ -9,8 +9,8 @@
     "lint": "nx run-many --target=lint --all",
     "build": "nx build",
     "test": "nx test",
-    "e2e": "nx e2e",
-    "e2e:watch": "yarn run e2e --watch"
+    "e2e": "nx e2e --runInBand --verbose",
+    "e2e:watch": "nx e2e --runInBand --watchAll"
   },
   "private": true,
   "dependencies": {
