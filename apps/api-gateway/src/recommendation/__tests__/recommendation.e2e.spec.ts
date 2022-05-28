@@ -66,7 +66,7 @@ describe('Recommendation', () => {
     await dbConnection.dropDatabase();
   });
 
-  describe('getMatch', () => {
+  describe('getRecommendation', () => {
     const insertMatchFactory = async () => {
       const insertedIds = await insertMockProfiles();
       return async (role: Role, hirer: number, employee: number) => {
@@ -84,14 +84,29 @@ describe('Recommendation', () => {
       };
     };
 
-    describe('getHirerMatch', () => {
-      it('should get 1 match(es) when 1 employe(es) accepts 1 hirer(s) and 1 hirer accepts 1 employee(s)', async () => {
+    describe('getHirerRecommendation', () => {
+      it('should get 2 recommendation(s) when 1 employe(es) accepts 1 hirer(s) and 1 hirer accepts 1 employee(s)', async () => {
         const insertMatch = await insertMatchFactory();
         await insertMatch(Role.Employee, 0, 0);
         const { hirerId } = await insertMatch(Role.Hirer, 0, 0);
 
         const response = await request(httpServer).get(
           `/api/recommendation/hirer/${hirerId}`,
+        );
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveLength(2);
+      });
+    });
+
+    describe('getEmployeeRecommendation', () => {
+      it('should get 2 recommendation(s) when 1 employe(es) accepts 1 hirer(s) and 1 hirer accepts 1 employee(s)', async () => {
+        const insertMatch = await insertMatchFactory();
+        const { employeeId } = await insertMatch(Role.Employee, 0, 0);
+        await insertMatch(Role.Hirer, 0, 0);
+
+        const response = await request(httpServer).get(
+          `/api/recommendation/employee/${employeeId}`,
         );
 
         expect(response.status).toBe(200);
