@@ -5,6 +5,7 @@ import { ConfigModule } from '@swiped-in/backend/config';
 import { config } from './config';
 import { MatchModule } from './match/match.module';
 import { ProfileModule } from './profile/profile.module';
+import { RecommendationModule } from './recommendation/recommendation.module';
 
 @Module({
   imports: [
@@ -17,16 +18,10 @@ import { ProfileModule } from './profile/profile.module';
           url: 'redis://localhost:6379',
         },
       },
-      {
-        name: 'RECOMMENDATION_SERVICE',
-        transport: Transport.REDIS,
-        options: {
-          url: 'redis://localhost:6379',
-        },
-      },
     ]),
     ProfileModule,
     MatchModule,
+    RecommendationModule,
   ],
 })
 export class AppModule {}
