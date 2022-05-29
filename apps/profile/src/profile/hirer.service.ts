@@ -20,17 +20,14 @@ export class HirerService {
   async findAll(paginationParams: GetPaginationParamsDto) {
     return this.hirerModel
       .find({ type: Role.Hirer })
+      .select('-auth')
       .skip(paginationParams.offset)
       .limit(paginationParams.limit);
   }
 
   async findOne(id: string) {
-    return this.hirerModel.findOne({ id, type: Role.Hirer });
+    return this.hirerModel.findOne({ id, type: Role.Hirer }).select('-auth');
   }
-
-  // async findByProvider(provider: string, id: string) {
-  //   return this.hirerModel.findByProviderId(provider, id);
-  // }
 
   async update(id: string, updateHirerDto: UpdateHirerDto) {
     return this.hirerModel.updateOne({ id, type: Role.Hirer }, updateHirerDto);
