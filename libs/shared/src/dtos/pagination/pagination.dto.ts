@@ -1,11 +1,14 @@
 import { Type } from 'class-transformer';
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsOptional } from 'class-validator';
 
 export class GetPaginationParamsDto {
   @Type(() => Number)
   @IsNumber()
-  offset: number;
+  // TODO: why optional is needed?
+  @IsOptional()
+  offset?: number;
   @Type(() => Number)
   @IsNumber()
-  limit: number;
+  @IsOptional()
+  limit?: number;
 }

@@ -3,6 +3,7 @@
   "projects": {
     "api-gateway": "apps/api-gateway",
     "auth": "apps/auth",
+    "backend-decorators": "libs/backend/decorators",
     "backend-config": "libs/backend/config",
     "backend-constants": "libs/constants",
     "backend-database": "libs/backend/database",

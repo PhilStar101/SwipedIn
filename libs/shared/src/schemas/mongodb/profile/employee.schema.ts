@@ -6,12 +6,16 @@ import { Role } from './common';
 
 @Schema()
 export class Employee extends Document {
-  // @Prop(
-  //   raw({
-  //     google: { type: String },
-  //   }),
-  // )
-  // providerIds: ProviderIds;
+  @Prop(
+    raw({
+      password: { type: String },
+      rt: { type: String },
+    }),
+  )
+  auth: {
+    password: string;
+    rt: string;
+  };
 
   @Prop({
     type: String,
@@ -31,7 +35,7 @@ export class Employee extends Document {
   @Prop()
   age: number;
 
-  @Prop({ unique: true, sparse: true })
+  @Prop({ unique: true })
   email: string;
 
   @Prop()

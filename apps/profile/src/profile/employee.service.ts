@@ -22,12 +22,15 @@ export class EmployeeService {
   async findAll(paginationParams: GetPaginationParamsDto) {
     return this.employeeModel
       .find({ type: Role.Employee })
+      .select('-auth')
       .skip(paginationParams.offset)
       .limit(paginationParams.limit);
   }
 
   async findOne(id: string) {
-    return this.employeeModel.findOne({ id, type: Role.Employee });
+    return this.employeeModel
+      .findOne({ id, type: Role.Employee })
+      .select('-auth');
   }
 
   // async findByProvider(provider: string, id: string) {

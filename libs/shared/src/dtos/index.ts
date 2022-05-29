@@ -1,3 +1,4 @@
+export * from './auth/auth.dto';
 export * from './match/create-match.dto';
 export * from './pagination/pagination.dto';
 export * from './profile/common';

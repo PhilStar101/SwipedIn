@@ -6,12 +6,16 @@ import { Role } from './common';
 
 @Schema()
 export class Hirer extends Document {
-  // @Prop(
-  //   raw({
-  //     google: { type: String },
-  //   }),
-  // )
-  // providerIds: ProviderIds;
+  @Prop(
+    raw({
+      password: { type: String },
+      rt: { type: String },
+    }),
+  )
+  auth: {
+    password: string;
+    rt: string;
+  };
 
   @Prop({
     type: String,
@@ -23,7 +27,7 @@ export class Hirer extends Document {
   @Prop()
   name: string;
 
-  @Prop({ unique: true, sparse: true })
+  @Prop({ unique: true })
   email: string;
 
   @Prop()
@@ -47,20 +51,4 @@ export class Hirer extends Document {
 }
 
 export const HirerSchema = SchemaFactory.createForClass(Hirer);
-
-// HirerSchema.statics.findByProviderId = function (
-//   provider: string,
-//   id: string,
-// ) {
-//   return this.findOne({
-//     providerIds: {
-//       [provider]: id,
-//     },
-//   });
-// };
-
 export type HirerModel = Model<Hirer>;
-
-// export interface HirerModel extends Model<Hirer> {
-//   findByProviderId: (provider: string, id: string) => Hirer;
-// }
