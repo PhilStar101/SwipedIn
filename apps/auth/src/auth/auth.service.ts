@@ -1,121 +1,189 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { RpcException } from '@nestjs/microservices';
+import { InjectModel } from '@nestjs/mongoose';
+import {
+  AuthDto,
+  Employee,
+  EmployeeModel,
+  Hirer,
+  HirerModel,
+  Role,
+} from '@swiped-in/shared';
 import * as argon from 'argon2';
-import { PrismaService } from '../prisma/prisma.service';
 
-import { AuthDto } from './dto';
 import { JwtPayload, Tokens } from './types';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
+    @InjectModel(Employee.name) private employeeModel: EmployeeModel,
+    @InjectModel(Hirer.name) private hirerModel: HirerModel,
     private jwtService: JwtService,
-    private config: ConfigService,
   ) {}
 
-  async signupLocal(dto: AuthDto): Promise<Tokens> {
-    const hash = await argon.hash(dto.password);
+  async signup(authDto: AuthDto, role: Role) {
+    const hash = await argon.hash(authDto.password);
+    let profile: Hirer | Employee;
 
-    const user = await this.prisma.user
-      .create({
-        data: {
-          email: dto.email,
-          hash,
-        },
-      })
-      .catch((error) => {
-        if (error instanceof PrismaClientKnownRequestError) {
-          if (error.code === 'P2002') {
-            throw new ForbiddenException('Credentials incorrect');
-          }
-        }
-        throw error;
+    if (role === Role.Hirer) {
+      profile = await new this.hirerModel({
+        email: authDto.email,
+        auth: { password: hash },
+      }).save();
+    } else {
+      profile = await new this.employeeModel({
+        email: authDto.email,
+        auth: { password: hash },
+      }).save();
+    }
+
+    const tokens = await this.getTokens(profile.id, profile.email, role);
+    if (role === Role.Hirer) {
+      await this.updateRtHash(
+        this.hirerModel,
+        profile.id,
+        tokens.refresh_token,
+      );
+    } else {
+      await this.updateRtHash(
+        this.employeeModel,
+        profile.id,
+        tokens.refresh_token,
+      );
+    }
+
+    return tokens;
+  }
+
+  // TODO: Get model at start of the method and then use it
+  async signin(authDto: AuthDto, role: Role) {
+    let profile: Hirer | Employee;
+
+    if (role === Role.Hirer) {
+      profile = await this.hirerModel.findOne({
+        email: authDto.email,
       });
+    } else {
+      profile = await this.employeeModel.findOne({
+        email: authDto.email,
+      });
+    }
+    if (!profile) throw new RpcException('Access Denied');
 
-    const tokens = await this.getTokens(user.id, user.email);
-    await this.updateRtHash(user.id, tokens.refresh_token);
+    const passwordMatches = await argon.verify(
+      profile.auth.password,
+      authDto.password,
+    );
+    if (!passwordMatches) throw new RpcException('Access Denied');
+
+    const tokens = await this.getTokens(profile.id, profile.email, role);
+    if (role === Role.Hirer) {
+      await this.updateRtHash(
+        this.hirerModel,
+        profile.id,
+        tokens.refresh_token,
+      );
+    } else {
+      await this.updateRtHash(
+        this.employeeModel,
+        profile.id,
+        tokens.refresh_token,
+      );
+    }
 
     return tokens;
   }
 
-  async signinLocal(dto: AuthDto): Promise<Tokens> {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email: dto.email,
-      },
-    });
-
-    if (!user) throw new ForbiddenException('Access Denied');
-
-    const passwordMatches = await argon.verify(user.hash, dto.password);
-    if (!passwordMatches) throw new ForbiddenException('Access Denied');
-
-    const tokens = await this.getTokens(user.id, user.email);
-    await this.updateRtHash(user.id, tokens.refresh_token);
-
-    return tokens;
-  }
-
-  async logout(userId: number): Promise<boolean> {
-    await this.prisma.user.updateMany({
-      where: {
-        id: userId,
-        hashedRt: {
-          not: null,
+  async signout(userId: number, role: Role) {
+    if (role === Role.Hirer) {
+      return await this.hirerModel.updateOne(
+        {
+          id: userId,
+          'auth.rt': { $ne: null },
         },
+        {
+          'auth.rt': null,
+        },
+      );
+    }
+    return await this.employeeModel.updateOne(
+      {
+        id: userId,
+        'auth.rt': { $not: null },
       },
-      data: {
-        hashedRt: null,
+      {
+        'auth.rt': null,
       },
-    });
-    return true;
+    );
   }
 
-  async refreshTokens(userId: number, rt: string): Promise<Tokens> {
-    const user = await this.prisma.user.findUnique({
-      where: {
+  async refreshTokens(userId: number, rt: string, role: Role) {
+    let profile: Hirer | Employee;
+
+    if (role === Role.Hirer) {
+      profile = await this.hirerModel.findOne({
         id: userId,
-      },
-    });
-    if (!user || !user.hashedRt) throw new ForbiddenException('Access Denied');
+      });
+    } else {
+      profile = await this.employeeModel.findOne({
+        id: userId,
+      });
+    }
+    if (!profile || !profile.auth.rt) throw new RpcException('Access Denied');
 
-    const rtMatches = await argon.verify(user.hashedRt, rt);
-    if (!rtMatches) throw new ForbiddenException('Access Denied');
+    const rtMatches = await argon.verify(profile.auth.rt, rt);
+    // TODO: Improve handling of the exceptions
+    console.log(rtMatches);
+    if (!rtMatches) throw new RpcException('Access Denied');
 
-    const tokens = await this.getTokens(user.id, user.email);
-    await this.updateRtHash(user.id, tokens.refresh_token);
+    const tokens = await this.getTokens(profile.id, profile.email, role);
+
+    if (role === Role.Hirer) {
+      await this.updateRtHash(
+        this.hirerModel,
+        profile.id,
+        tokens.refresh_token,
+      );
+    } else {
+      await this.updateRtHash(
+        this.employeeModel,
+        profile.id,
+        tokens.refresh_token,
+      );
+    }
 
     return tokens;
   }
 
-  async updateRtHash(userId: number, rt: string): Promise<void> {
+  async updateRtHash(
+    model: HirerModel | EmployeeModel,
+    userId: number,
+    rt: string,
+  ) {
     const hash = await argon.hash(rt);
-    await this.prisma.user.update({
-      where: {
-        id: userId,
+    return model.updateOne(
+      { id: userId },
+      {
+        'auth.rt': hash,
       },
-      data: {
-        hashedRt: hash,
-      },
-    });
+    );
   }
 
-  async getTokens(userId: number, email: string): Promise<Tokens> {
+  async getTokens(userId: number, email: string, role: Role): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
       sub: userId,
-      email: email,
+      email,
+      role,
     };
 
     const [at, rt] = await Promise.all([
       this.jwtService.signAsync(jwtPayload, {
-        secret: this.config.get<string>('AT_SECRET'),
+        secret: 'AT_SECRET',
         expiresIn: '15m',
       }),
       this.jwtService.signAsync(jwtPayload, {
-        secret: this.config.get<string>('RT_SECRET'),
+        secret: 'RT_SECRET',
         expiresIn: '7d',
       }),
     ]);

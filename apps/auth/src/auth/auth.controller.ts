@@ -1,50 +1,43 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { DatabaseService } from '@swiped-in/backend/database';
+import { AuthDto, createPatternFactory, Role } from '@swiped-in/shared';
 
-import { GetCurrentUser, GetCurrentUserId, Public } from '../common/decorators';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto';
 import { Tokens } from './types';
 
-@Controller('auth')
+const authPattern = createPatternFactory('auth');
+
+@Controller()
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private db: DatabaseService) {}
 
-  @Public()
-  @Post('local/signup')
-  @HttpCode(HttpStatus.CREATED)
-  signupLocal(@Body() dto: AuthDto): Promise<Tokens> {
-    return this.authService.signupLocal(dto);
+  @MessagePattern(authPattern('signup'))
+  signup(@Payload('authDto') authDto: AuthDto, @Payload('role') role: Role) {
+    return this.authService.signup(authDto, role);
   }
 
-  @Public()
-  @Post('local/signin')
-  @HttpCode(HttpStatus.OK)
-  signinLocal(@Body() dto: AuthDto): Promise<Tokens> {
-    return this.authService.signinLocal(dto);
+  @MessagePattern(authPattern('signin'))
+  signin(@Payload('authDto') authDto: AuthDto, @Payload('role') role: Role) {
+    return this.authService.signin(authDto, role);
   }
 
-  @Post('logout')
-  @HttpCode(HttpStatus.OK)
-  logout(@GetCurrentUserId() userId: number): Promise<boolean> {
-    return this.authService.logout(userId);
+  @MessagePattern(authPattern('signout'))
+  signout(@Payload('userId') userId: number, @Payload('role') role: Role) {
+    return this.authService.signout(userId, role);
   }
 
-  @Public()
-  @UseGuards(AuthGuard('jwt-refresh'))
-  @Post('refresh')
-  @HttpCode(HttpStatus.OK)
+  @MessagePattern(authPattern('refresh'))
   refreshTokens(
-    @GetCurrentUserId() userId: number,
-    @GetCurrentUser('refreshToken') refreshToken: string,
+    @Payload('userId') userId: number,
+    @Payload('refreshToken') refreshToken: string,
+    @Payload('role') role: Role,
   ): Promise<Tokens> {
-    return this.authService.refreshTokens(userId, refreshToken);
+    return this.authService.refreshTokens(userId, refreshToken, role);
+  }
+
+  @MessagePattern(authPattern('drop'))
+  dropProfiles() {
+    return this.db.connection.collection('profiles').drop();
   }
 }
